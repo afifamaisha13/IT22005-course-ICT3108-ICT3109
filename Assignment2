@@ -1,0 +1,143 @@
+OOP Encapsulation Code with comment
+
+✅ Car Class – located in the com package:
+
+package com;
+
+// This class represents a Car with properties color and year. public class Car { private String color; // Color of the car private int year; // Manufacturing year of the car
+
+// Getter method for color
+public String getColor() {
+    return color;
+}
+
+// Setter method for color
+public void setColor(String color) {
+    this.color = color;
+}
+
+// Getter method for year
+public int getYear() {
+    return year;
+}
+
+// Setter method for year
+public void setYear(int year) {
+    this.year = year;
+}
+
+// Method to print car status
+public void CarStatus() {
+    System.out.println("Car Status: Running!");
+}
+
+// Note: This is a commented-out constructor. It would allow initialization of Car with parameters.
+// public com.Car(String color, int year) { // this.color = color; // this.year = year; // } }
+
+✅ Car1 Class – also in the com package:
+
+package com;
+
+// Another car class, but this one uses constructor-based initialization. public class Car1 { private String color; // Color of the car private int year; // Manufacturing year of the car
+
+// Getter for color
+public String getColor() {
+    return color;
+}
+
+// Getter for year
+public int getYear() {
+    return year;
+}
+
+// Method to print car status
+public void CarStatus() {
+    System.out.println("Car Status: Running!");
+}
+
+// Constructor to initialize color and year
+public Car1(String color, int year) {
+    this.color = color;
+    this.year = year;
+}
+}
+
+✅ Main Class – located in the mainpack package:
+
+package mainpack;
+
+import com.Car; import com.Car1;
+
+// Entry point of the program public class Main { public static void main(String[] args) {
+
+    // Using the Car class - setting properties via setters
+    System.out.println("Car object ...set with setter\n");
+    Car car = new Car();
+    car.setYear(2020);
+    car.setColor("red");
+    System.out.println("Color: " + car.getColor());
+    System.out.println("Year: " + car.getYear());
+    car.CarStatus();
+
+    // Using the Car1 class - setting properties via constructor
+    System.out.println("Car1 object ...set with cons\n");
+    Car1 car1 = new Car1("Blue", 2018);
+    System.out.println("Color: " + car1.getColor());
+    System.out.println("Year: " + car1.getYear());
+    car1.CarStatus();
+}
+}
+
+encapsulation (private fields and public getters/setters). Initialization of fields is done using setters.
+
+public class Car { private String color; private int year;
+
+// Getters and Setters
+// Method: CarStatus()
+}
+
+🔹 Car1 Class Package: com Description: Similar to Car, but this class uses a constructor to initialize the color and year fields, and does not provide setters.
+
+public class Car1 { private String color; private int year;
+
+// Constructor
+// Getters
+// Method: CarStatus()
+}
+
+🔹 Main Class Package: mainpack Description: This class contains the main() method, which is the entry point of the program. It demonstrates how to create and use objects of Car and Car1.
+
+public class Main { public static void main(String[] args) { // Code to demonstrate Car and Car1 usage } }
+
+🔹 Car Class Package: com Description: Represents a car object using encapsulation (private fields and public getters/setters). Initialization of fields is done using setters.
+
+public class Car { private String color; private int year;
+
+// Getters and Setters
+// Method: CarStatus()
+}
+
+🔹 Car1 Class Package: com Description: Similar to Car, but this class uses a constructor to initialize the color and year fields, and does not provide setters.
+
+public class Car1 { private String color; private int year;
+
+// Constructor
+// Getters
+// Method: CarStatus()
+}
+
+🔹 Main Class Package: mainpack Description: This class contains the main() method, which is the entry point of the program. It demonstrates how to create and use objects of Car and Car1.
+
+public class Main { public static void main(String[] args) { // Code to demonstrate Car and Car1 usage } }
+
+Object
+
+🔹 car – Object of class Car Car car = new Car(); *This object is created using the default constructor (no parameters).
+
+Its properties (color, year) are set using setter methods: car.setColor("red"); car.setYear(2020); It then calls a method: car.CarStatus();
+
+🔹 car1 – Object of class Car1
+
+Car1 car1 = new Car1("Blue", 2018); *This object is created using a parameterized constructor, passing in the values "Blue" and 2018.
+
+It uses getter methods to retrieve its values: car1.getColor(); car1.getYear(); It also calls: car1.CarStatus();
