@@ -1,3 +1,43 @@
+****count number of characters
+
+.model small
+.stack 100h
+.data
+.code
+main proc
+    mov ax,@data
+    mov ds,ax
+    
+   mov cx,-1
+   mov ah,1 
+   
+   
+   read:
+   int 21h
+   inc cx
+   cmp al,0dh
+   je print
+   jmp read 
+   
+   
+   print:
+   mov ah,2
+   mov dl,0ah
+   int 21h
+   mov dl,0dh
+   int 21h
+   add cx,48
+   mov dx,cx
+   int 21h
+    
+    exit:
+    mov ah,4ch
+    int 21h
+    main endp
+end main
+    
+
+
 **reverse string
 
 .model small
