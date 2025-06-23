@@ -1,100 +1,106 @@
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-/**
- * Created by User PC on 6/9/16.
- */
-public class ServiceClass extends MyDBClass{
+public class ServiceClass {
+    private List<Student> students = new ArrayList<>();
+    private int nextId = 1;  // To auto-increment student IDs
 
-    public boolean InsetDB(String name ) {
-        this.getConnection();
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ServiceClass service = new ServiceClass();
 
-        String sql = "INSERT INTO STUDENT(NAME) VALUES(?)";
+        while (true) {
+            System.out.println("\n=== Student Database Menu ===");
+            System.out.println("1. Insert new student");
+            System.out.println("2. Update student name");
+            System.out.println("3. Delete student");
+            System.out.println("4. Show all students");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option (1-5): ");
 
-        try
-        {
-            ps = connection.prepareStatement(sql);
-            ps.setString(1, name);
-            //rs = ps.executeQuery();
-            ps.executeUpdate();
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
 
-            ps.close();
-            //rs.close();
-            connection.close();
-            return true;
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String name = scanner.nextLine();
+                    if (service.insertDB(name)) {
+                        System.out.println("Student inserted successfully.");
+                    } else {
+                        System.out.println("Insert failed.");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter student ID to update: ");
+                    int updateId = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Enter new name: ");
+                    String newName = scanner.nextLine();
+                    if (service.updateStudent(updateId, newName)) {
+                        System.out.println("Student updated.");
+                    } else {
+                        System.out.println("Update failed. Student ID not found.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter student ID to delete: ");
+                    int deleteId = scanner.nextInt();
+                    if (service.deleteStudent(deleteId)) {
+                        System.out.println("Student deleted.");
+                    } else {
+                        System.out.println("Delete failed. Student ID not found.");
+                    }
+                    break;
+
+                case 4:
+                    List<Student> students = service.readFromDB();
+                    if (students != null && !students.isEmpty()) {
+                        System.out.println("\n--- Student List ---");
+                        for (Student s : students) {
+                            System.out.println("ID: " + s.getId() + ", Name: " + s.getName());
+                        }
+                    } else {
+                        System.out.println("No students found.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting program.");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
         }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
+    }
+
+    private boolean updateStudent(int updateId, String newName) {
+        for (Student student : students) {
+            if (student.getId() == updateId) {
+                student.setName(newName);
+                return true;
+            }
         }
         return false;
     }
 
-
-    public List<Student> ReadFromDB() {
-        List<Student> list = new ArrayList<Student>();
-        Student std = null;
-        this.getConnection();
-        String sql ="select * from student";
-        try
-        {
-            ps = connection.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next())
-            {
-                std = new Student();
-                std.setId(rs.getInt(1));
-                std.setName(rs.getString(2));
-                list.add(std);
-            }
-            ps.close();
-            rs.close();
-            connection.close();
-            return list;
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
+    List<Student> readFromDB() {
+        return new ArrayList<>(students);  // Return a copy of the list
     }
 
-    public void UpdateStudent(int studentSerial, String newname) {
-
-        this.getConnection();
-        String sql = "update student set name=? where id=?";
-
-        try
-        {
-            ps = connection.prepareStatement(sql);
-            ps.setString(1, newname);
-            ps.setInt(2, studentSerial);
-            ps.executeUpdate();
-            ps.close();
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+    private boolean deleteStudent(int deleteId) {
+        return students.removeIf(student -> student.getId() == deleteId);
     }
 
-    public void deleteStudent(int studentSerial) {
-        this.getConnection();
-        String sql ="delete from student where id=?";
-
-        try
-        {
-            ps = connection.prepareStatement(sql);
-            ps.setInt(1,studentSerial);
-            ps.executeUpdate();
-            ps.close();
-            connection.close();
-
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+    boolean insertDB(String name) {
+        students.add(new Student(nextId++, name));
+        return true;
     }
 }
+

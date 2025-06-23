@@ -1,27 +1,35 @@
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Created by User PC on 6/9/16.
- */
-public class ConsoleInput  {
-    public static void main(String[] args)
-    {
-        System.out.println("Name: ");
+public class ConsoleInput {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        ServiceClass service = new ServiceClass();
+
+        System.out.println("=== Student Management System ===");
+        System.out.print("Enter student name: ");
         String name = scanner.nextLine();
-        //System.out.print(name);
-        ServiceClass serviceClass = new ServiceClass();
-        serviceClass.InsetDB(name);
 
-        List<Student> students = serviceClass.ReadFromDB();
-
-        if (students!=null){
-            for(int i=0; i<students.size(); i++){
-                Student std = students.get(i);
-                System.out.println(std.getId()+" "+std.getName());
-            }
+        // Insert student
+        if (service.insertDB(name)) {
+            System.out.println("Student added successfully!");
+        } else {
+            System.out.println("Failed to add student.");
+            return;
         }
 
+        // Display all students
+        List<Student> students = service.readFromDB();
+
+        if (students != null && !students.isEmpty()) {
+            System.out.println("\n--- Current Students ---");
+            for (Student student : students) {
+                System.out.println("ID: " + student.getId() + ", Name: " + student.getName());
+            }
+        } else {
+            System.out.println("No students found in the database.");
+        }
+
+        scanner.close();
     }
 }
